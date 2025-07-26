@@ -2,3 +2,6 @@
 .active hr{
     @apply block;
 }
+:root {
+  --primary: #5f6FFF;
+}
