@@ -11,7 +11,7 @@ export default function Home() {
       <SpecialityMenu/>
       <TopDoctors/>
       <Banner/>
-      home
+      
     </div>
   )
 }
