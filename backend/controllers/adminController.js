@@ -9,7 +9,7 @@ const addDoc = async (req,res) => {
     try{
         const {name,email,password,speciality,degree,experience,about,fee,address} = req.body;
         const imageFile = req.file;
-
+        console.log("dts",req.body)
         console.log("req.file:", req.file);
 
         // checking for all data to verifiy
@@ -80,4 +80,18 @@ const loginAdmin = async (req,res) => {
         res.json({success:false,message:error.message})
     }
 }
-export  {addDoc,loginAdmin}
+
+const allDoctors = async (req,res) => {
+    try{
+        const doctors = await doctorModel.find({}).select('-password');
+        res.json({success:true,doctors})
+
+
+    }catch(error){
+        console.log(error);
+        res.json({success:false,message:error.message})
+    }
+}
+
+
+export  {addDoc,loginAdmin,allDoctors}
