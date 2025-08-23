@@ -5,7 +5,7 @@ import { AppContext } from '../context/AppContext.jsx';
 const Navbar = () => {
   const navigate = useNavigate();
 
-  const {token,setToken} = useContext(AppContext);
+  const {token,setToken,userData} = useContext(AppContext);
   const [showMenu,setShowMenu] = useState(false);
 
 
@@ -43,7 +43,7 @@ const Navbar = () => {
           <div className='flex items-center gap-2 cursor-pointer group relative'>
             <img
                 className='w-8 rounded-full' 
-                src = {assets.profile_pic}
+                src = {userData.image}
                 alt="profile picture"
             />
             <img  
@@ -67,7 +67,7 @@ const Navbar = () => {
         <img onClick={()=>setShowMenu(true)} 
         className='w-6 md:hidden' src={assets.menu_icon} alt=""/>     
         {/* Mobile Menu */}
-          <diV className={`${showMenu ? 
+          <div className={`${showMenu ? 
             'fixed w-full ': 'h-0 w-0'
           } md:hidden right-0 top-0 bottom-0 z-20 overflow-hidden justify-between bg-white transition-all`}> 
             <div className='flex items-center justify-right px-5 py-6'>
@@ -81,7 +81,7 @@ const Navbar = () => {
               <NavLink  onClick={()=>setShowMenu(false)} to='/contact'><p className="px-4 py-2 rounded inline-block">CONTACT US</p></NavLink>
 
             </ul>
-          </diV>
+          </div>
       </div>
     </div>
   )

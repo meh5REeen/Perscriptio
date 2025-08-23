@@ -4,6 +4,7 @@ import {AdminContext} from "../../Context/AdminContext";
 import {toast} from 'react-toastify';
 import axios from 'axios';
 const AddDoctor = () => {
+  const [_id,setId] = useState('');
   const [docImg,setDocImg] = useState(false);
   const [name, setName] = useState('');
   const [email,setEmail] = useState('');
@@ -26,6 +27,7 @@ const AddDoctor = () => {
         return toast.error("Image not selected")
       }
       const formData = new FormData();
+      formData.append('_id',_id)
       formData.append('image',docImg)
       formData.append('name',name)
       formData.append('email',email)
@@ -49,6 +51,7 @@ const AddDoctor = () => {
       )
       if (data.data.success) { // ✅ correct property
           toast.success(data.data.message);
+          setId('')
           setDocImg(false)
           setName('')
           setEmail('')
@@ -92,6 +95,10 @@ const AddDoctor = () => {
           
           {/* Left side */}
           <div className="w-full lg:flex-1 flex flex-col gap-4">
+            <div className="flex-1 flex flex-col gap-1">
+              <p>Doctor Id</p>
+              <input onChange={(e)=>setId(e.target.value)} value={_id} type="text" className="border rounded px-3 py-2" placeholder="Id" required />
+            </div>
             <div className="flex-1 flex flex-col gap-1">
               <p>Your Name</p>
               <input onChange={(e)=>setName(e.target.value)} value={name} type="text" className="border rounded px-3 py-2" placeholder="Name" required />

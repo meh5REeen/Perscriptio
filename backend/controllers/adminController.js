@@ -7,13 +7,13 @@ import jwt from 'jsonwebtoken';
 // Api ofr adding doctors 
 const addDoc = async (req,res) => {
     try{
-        const {name,email,password,speciality,degree,experience,about,fee,address} = req.body;
+        const {_id,name,email,password,speciality,degree,experience,about,fee,address} = req.body;
         const imageFile = req.file;
         console.log("dts",req.body)
         console.log("req.file:", req.file);
 
         // checking for all data to verifiy
-        if( !name || !email || !imageFile || !password || !speciality || !about || !degree || !experience || !fee || !address){
+        if(!_id|| !name || !email || !imageFile || !password || !speciality || !about || !degree || !experience || !fee || !address){
             return res.json({success:false,message:"Missing details"})
         }
 
@@ -37,7 +37,7 @@ const addDoc = async (req,res) => {
         const imageUrl =  imageUpload.secure_url
 
         const doctorData={
-            name,email,image:imageUrl,
+            _id,name,email,image:imageUrl,
             password:hashedPassword,speciality,degree,experience,
             about,fee,address:JSON.parse(address),
             date:Date.now(),
