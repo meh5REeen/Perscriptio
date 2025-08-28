@@ -64,7 +64,10 @@ const AdminContextProvider = (props) =>{
 
         if(data.success){
             toast.success(data.message)
-            
+            getAllAppointments()
+        }
+        else{
+            toast.error(data.message)
         }
 
     }catch(error){
@@ -76,7 +79,7 @@ const AdminContextProvider = (props) =>{
         aToken,setAToken,
         backendUrl,doctors,
         getAllDoctors,changeAvailability,
-        appointments,setAppointments,getAllAppointments
+        appointments,setAppointments,getAllAppointments,cancelAppointment
     }
     return (
         <AdminContext.Provider value={value}>
