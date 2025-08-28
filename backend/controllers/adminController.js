@@ -152,7 +152,7 @@ const adminDashboard = async (req,res) => {
 
         const dashData = {
             doctors: doctors.length,
-            appointments:appointments.lengts,
+            appointments:appointments.length,
             patients:users.length,
             latestAppointments:appointments.reverse().slice(0,5),
 
