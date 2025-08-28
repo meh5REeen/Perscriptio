@@ -48,6 +48,8 @@ const Appointments = () => {
     }
   };
 
+  // Stripe Payment (Test Mode only, for practice in Pakistan)
+  // Uses Stripe Test API keys from .env and test cards (e.g., 4242 4242 4242 4242)
   const makePayment = async (fees) => {
     if (!stripe || !elements) {
       toast.error("Stripe is not loaded yet");
@@ -55,38 +57,44 @@ const Appointments = () => {
     }
 
     try {
+      // Request PaymentIntent from backend (Test Mode)
       const { data } = await axios.post(
         backendUrl + "/api/user/make-payment",
         { fees },
         { headers: { token } }
       );
 
-      if (!data.success) {
+      if (!data.success || !data.clientSecret) {
         toast.error("Failed to create payment");
+        console.error("Stripe PaymentIntent error:", data.message || data);
         return;
       }
 
       const clientSecret = data.clientSecret;
       const cardElement = elements.getElement(CardElement);
 
+      // Confirm card payment using Stripe.js (Test Mode)
       const result = await stripe.confirmCardPayment(clientSecret, {
         payment_method: {
           card: cardElement,
         },
       });
-      console.log("Client secret:", clientSecret);
-
-
+      console.log("Stripe clientSecret:", clientSecret);
       if (result.error) {
-        console.log("Stripe confirm error:", result.error);
-        toast.error(result.error.message);
-      } else if (result.paymentIntent.status === "succeeded") {
+        // Show error to user
+        console.error("Stripe confirm error:", result.error);
+        toast.error(result.error.message || "Payment failed");
+      } else if (result.paymentIntent && result.paymentIntent.status === "succeeded") {
         toast.success("Payment successful!");
         getUserAppointments();
+      } else {
+        toast.error("Payment was not successful. Please try again.");
+        console.error("Unexpected Stripe result:", result);
       }
     } catch (error) {
-      console.error(error);
-      toast.error(error.message);
+      // Show error to user
+      console.error("Payment error:", error);
+      toast.error(error.message || "Payment failed");
     }
   };
 
