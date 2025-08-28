@@ -246,19 +246,24 @@ const cancelAppointment = async (req,res) => {
 
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY)
 
-const makePayment = async (req,res)=>{
-try {
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: req.body.fees, // amount in cents ($50.00)
-      currency: 'usd',
-      payment_method_types: ['card'],
-    });
-
-    res.json({ clientSecret: paymentIntent.client_secret });
-  } catch (error) {
-    console.error(error);
-    res.status(500).send({ error: error.message });
-  }}
+// Stripe PaymentIntent creation (Test Mode only, for practice in Pakistan)
+// Uses Stripe Test API keys from .env
+const makePayment = async (req, res) => {
+    try {
+        // Stripe expects amount in cents (e.g., 5000 = $50.00)
+        const paymentIntent = await stripe.paymentIntents.create({
+            amount: req.body.fees,
+            currency: 'usd',
+            payment_method_types: ['card'],
+        });
+        // Always return success and clientSecret for frontend
+        res.json({ success: true, clientSecret: paymentIntent.client_secret });
+    } catch (error) {
+        console.error('Stripe PaymentIntent error:', error);
+        // Return error in a consistent format
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
 
 
 
