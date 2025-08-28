@@ -4,7 +4,7 @@ import doctorModel from '../models/doctorModel.js';
 import validator from 'validator';
 import jwt from 'jsonwebtoken';
 import appointmentModel from '../models/appointmentModel.js';
-
+import userModel from '../models/userModel.js'
 // Api ofr adding doctors 
 const addDoc = async (req,res) => {
     try{
@@ -141,4 +141,29 @@ const cancelAppointment = async (req,res) =>{
         }
 }
 
-export  {addDoc,cancelAppointment,appointmentsAdmin,loginAdmin,allDoctors}
+
+// API to get dashboard data for admin panel
+const adminDashboard = async (req,res) => {
+    try{
+        const doctors = await doctorModel.find({})
+        const users = await userModel.find({})
+        const appointments = await appointmentModel.find({})
+
+
+        const dashData = {
+            doctors: doctors.length,
+            appointments:appointments.lengts,
+            patients:users.length,
+            latestAppointments:appointments.reverse().slice(0,5),
+
+        }
+        res.json({success:true,dashData})
+
+
+    }catch(error){
+        console.log(error)
+        res.json({success:false,message:error.message})
+    }
+}
+
+export  {addDoc,cancelAppointment,adminDashboard,appointmentsAdmin,loginAdmin,allDoctors}
