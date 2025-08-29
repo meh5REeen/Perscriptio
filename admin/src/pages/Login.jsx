@@ -1,5 +1,4 @@
 import React, { useContext, useState } from 'react'
-import {assets} from '../assets/assets.js';
 import { AdminContext } from '../Context/AdminContext.jsx';
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -23,7 +22,7 @@ const Login = () => {
           localStorage.setItem("aToken",data.token);
           setAToken(data.token)
            toast.success("Login successful!");
-        }
+        }}
         else{
           const {data} = await axios.post(backendUrl+'/api/doctor/login',{email,password})
           
@@ -35,7 +34,7 @@ const Login = () => {
 
         }
 
-      }
+      
     }catch(error){
         toast.error(error.response?.data?.message || "Something went wrong");
 

@@ -11,6 +11,9 @@ import Appointments from './pages/Admin/Appointments';
 import AddDoctor from './pages/Admin/AddDoctor';
 import DoctorList from './pages/Admin/DoctorList';
 import { DoctorContext } from './Context/DoctorContext';
+import DoctorDashboard from './pages/Doctor/doctorDashboard';
+import DoctorAppointment from './pages/Doctor/doctorAppointment';
+import DoctorProfile from './pages/Doctor/doctorProfile';
 
 const App = () => {
   const {aToken} = useContext(AdminContext);
@@ -23,11 +26,17 @@ const App = () => {
       <div className='flex items-start'> 
         <SideBar/>
         <Routes>
+          {/* Admin Routes */}
           <Route path='/' element={<></>} />
           <Route path='/admin-dashboard' element={<Dashboard/>} />
           <Route path='/all-appointments' element={<Appointments/>} />
           <Route path='/add-doctor' element={<AddDoctor/>} />
           <Route path='/doctor-list' element={<DoctorList/>} />
+          
+          {/* Doctor Routes */}
+          <Route path='/doctor-dashboard' element={<DoctorDashboard/>} />
+          <Route path='/doctor-appointments' element={<DoctorAppointment/>} />
+          <Route path='/doctor-profile' element={<DoctorProfile/>} />
 
 
         </Routes>

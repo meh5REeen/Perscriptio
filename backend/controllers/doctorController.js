@@ -1,6 +1,7 @@
 import doctorModel from '../models/doctorModel.js'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import appointmentModel from '../models/appointmentModel.js';
 
 
 export const changeAvailability =async (req,res) => {
@@ -50,6 +51,64 @@ export const loginDoctor = async (req,res) => {
 
     }catch(error){
          console.log(error.message);
+        res.json({success:false,message:error.message})
+    }
+}
+
+
+// API to get doctor appointments for doctor panel
+
+export const appointmentsDoctor = async (req,res)=>{
+    try{
+
+        const {docId} = req
+        const appointments = await appointmentModel.find({docId})
+        res.json({success:true,appointments})
+
+
+    }catch(error){
+        console.log(error.message);
+        res.json({success:false,message:error.message})
+    }
+}
+
+// API to marks appointment completed for the doctor panel
+export const appointmentComplete = async (req,res) =>{
+    try{
+        const {docId,appointmentId} = req.body
+        const appointmentData = await appointmentModel.findById(appointmentId)
+
+        if(appointmentData && appointmentData.docId === docId){
+            await appointmentModel.findByIdAndUpdate(appointmentId,{isCompleted:true})
+            return res.json({success:true,message:'Appointment Completed'})
+        }
+        else{
+            return res.json({success:false,message:"mark failed"})
+        }
+    }
+    catch(error){
+        console.log(error.message);
+        res.json({success:false,message:error.message})
+    }
+}
+
+
+
+export const appointmentCancel = async (req,res) =>{
+    try{
+        const {docId,appointmentId} = req.body
+        const appointmentData = await appointmentModel.findById(appointmentId)
+
+        if(appointmentData && appointmentData.docId === docId){
+            await appointmentModel.findByIdAndUpdate(appointmentId,{cancelled:true})
+            return res.json({success:true,message:'Appointment Cancelled'})
+        }
+        else{
+            return res.json({success:false,message:"Cannot Cancel"})
+        }
+    }
+    catch(error){
+        console.log(error.message);
         res.json({success:false,message:error.message})
     }
 }
