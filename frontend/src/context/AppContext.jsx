@@ -26,7 +26,7 @@ const AppContextProvider = (props) => {
             toast.error(error.message);
         }
     }
-    
+    // loads user data
 
     const loadUserData = async () =>{
         try{
