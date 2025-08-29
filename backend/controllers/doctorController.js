@@ -112,3 +112,43 @@ export const appointmentCancel = async (req,res) =>{
         res.json({success:false,message:error.message})
     }
 }
+
+
+// API for the doctor dashboard 
+export const doctorDashboard = async (req,res) => {
+    try{
+
+        const {docId} = req
+
+        const appointments = await appointmentModel.find({docId})
+        let earning = 0
+
+        appointments.map((item)=>{
+            if(item.isCompleted || item.payment){
+                earning += item.amount
+            }
+        })
+
+        let patients = []
+
+        appointments.map((item) => {
+            if(!patients.includes(item.userId)){
+                patients.push(item.userId)
+            }
+        })
+
+        const dashData =  {
+            earning,
+            appointments:appointments.length,
+            patients:patients.length,
+            latestAppointments: appointments.reverse().slice(0,5)
+        }
+
+        return res.json({success:true,dashData})
+
+    }
+    catch(error){
+        console.log(error.message);
+        res.json({success:false,message:error.message})
+    }
+}
