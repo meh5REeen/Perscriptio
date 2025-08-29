@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 import { assets } from '../../assets/assets'
 import { AppContext } from '../../Context/AppContext'
 const DoctorDashboard = () => {
-  const {dashData,dToken,setDashData,completeAppointment,cancelAppointment,getDashData} = useContext(DoctorContext)
+  const {dashData,dToken,completeAppointment,cancelAppointment,getDashData} = useContext(DoctorContext)
   const {currency,slotDateFormat} = useContext(AppContext)
   useEffect(()=>{
     if(dToken){
@@ -14,7 +14,7 @@ const DoctorDashboard = () => {
   },[dToken])
   
   return dashData &&(
-    <div>
+    <div className='m-5'>
       <div className='flex flex-wrap gap-3 '>
               <div className='flex items-center gap-2 bg-white p-4 min-w-52 rounded border-2 border-gray-100 cursor-pointer hover:scale-105 transition-all '>
                 <img className='w-14' src={assets.earning_icon} alt=""/>

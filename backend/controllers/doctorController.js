@@ -152,3 +152,35 @@ export const doctorDashboard = async (req,res) => {
         res.json({success:false,message:error.message})
     }
 }
+
+
+// API To get doctor profile for the doctor panel
+
+export const doctorProfile = async (req,res) => {
+    try{
+        const {docId} = req
+        const profileData = await doctorModel.findById(docId).select('-password')
+    
+        res.json({success:true,profileData})
+    }
+    catch(error){
+        console.log(error.message);
+        res.json({success:false,message:error.message})
+    }
+}
+
+
+// API to update doctor profile data
+export const updateDoctorProfile = async (req,res) =>{
+    try{
+        const {docId,fee,address,available,} = req.body
+
+        await doctorModel.findByIdAndUpdate(docId,{fee,address,available})
+
+        res.json({success:true,message:"Profile Updated"})
+    }
+    catch(error){
+        console.log(error.message);
+        res.json({success:false,message:error.message})
+    }
+}
